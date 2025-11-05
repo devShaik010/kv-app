@@ -12,7 +12,7 @@ class IntroScreen1 extends StatelessWidget {
         children: [
           // Fullscreen background image
           Image.asset(
-            "assets/Gemini_Generated_Image_55i8uz55i8uz55i8.png",
+            "assets/Gemini_Generated_Image_adioc2adioc2adio.png",
             fit: BoxFit.cover,
           ),
 
@@ -22,7 +22,7 @@ class IntroScreen1 extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: 350,
+              height: 260,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(
