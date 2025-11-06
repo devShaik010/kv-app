@@ -1,4 +1,4 @@
-package com.example.kisanview1
+package com.example.kisanverse
 
 import io.flutter.embedding.android.FlutterActivity
 
