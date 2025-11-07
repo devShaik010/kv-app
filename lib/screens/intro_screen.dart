@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kisanverse/screens/home.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -132,9 +133,17 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            "Get Started",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          GestureDetector(
+                            onTap: () {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const Home()),
+  );
+},
+                            child: const Text(
+                              "Get Started",
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Icon(
