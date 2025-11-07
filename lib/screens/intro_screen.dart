@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kisanverse/screens/home.dart';
+import 'package:kisanverse/screens/model/farmer_info_input.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -60,7 +60,6 @@ class _IntroScreenState extends State<IntroScreen> {
             left: 0,
             right: 0,
             child: Container(
-              // height: MediaQuery.sizeOf(context).height * 0.35,
               width: MediaQuery.sizeOf(context).width,
               padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 45),
               decoration: BoxDecoration(
@@ -119,7 +118,14 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                     const SizedBox(height: 35),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FarmerInfoInput(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown[800],
                         shape: RoundedRectangleBorder(
@@ -133,17 +139,9 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const Home()),
-  );
-},
-                            child: const Text(
-                              "Get Started",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
-                            ),
+                          const Text(
+                            "Get Started",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                           const SizedBox(width: 8),
                           Icon(
