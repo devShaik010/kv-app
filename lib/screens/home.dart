@@ -4,12 +4,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:kisanverse/controllers/navigation_controller.dart';
 import 'package:kisanverse/screens/language_settings_screen.dart';
 import 'package:kisanverse/screens/crop_recommendation.dart';
+import 'package:kisanverse/screens/yield_prediction.dart';
+import 'package:kisanverse/screens/ai_bot_screen.dart';
+import 'package:kisanverse/screens/government_schemes_screen.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -256,7 +257,7 @@ class _HomeState extends State<Home> {
                         Icons.trending_up_rounded,
                         const Color(0xFF4DB6AC),
                         const Color(0xFF26A69A),
-                        null,
+                        '/yield-prediction',
                       ),
                     ),
                   ],
@@ -271,7 +272,7 @@ class _HomeState extends State<Home> {
                         Icons.smart_toy_rounded,
                         const Color(0xFF64B5F6),
                         const Color(0xFF42A5F5),
-                        null,
+                        '/ai-bot',
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -282,7 +283,7 @@ class _HomeState extends State<Home> {
                         Icons.policy_rounded,
                         const Color(0xFFFFD54F),
                         const Color(0xFFFFCA28),
-                        null,
+                        '/government-schemes',
                       ),
                     ),
                   ],
@@ -534,21 +535,22 @@ class _HomeState extends State<Home> {
   ) {
     return GestureDetector(
       onTap: () {
+        Widget? screen;
+        
         if (route == '/crop-recommendation') {
+          screen = const CropRecommendation();
+        } else if (route == '/yield-prediction') {
+          screen = const YieldPrediction();
+        } else if (route == '/ai-bot') {
+          screen = const AiBotScreen();
+        } else if (route == '/government-schemes') {
+          screen = const GovernmentSchemesScreen();
+        }
+        
+        if (screen != null) {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const CropRecommendation(),
-            ),
-          );
-        } else {
-          // Show coming soon message for features not yet implemented
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$title - Coming Soon!'),
-              duration: const Duration(seconds: 2),
-              backgroundColor: const Color(0xFF4CAF50),
-            ),
+            MaterialPageRoute(builder: (context) => screen!),
           );
         }
       },
@@ -576,13 +578,19 @@ class _HomeState extends State<Home> {
               child: Icon(icon, size: 36, color: Colors.white),
             ),
             const SizedBox(height: 12),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                  height: 1.2,
+                ),
               ),
             ),
           ],
