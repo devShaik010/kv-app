@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   // Base URL - change this for production
   static const String baseUrl = 'http://192.168.137.58:8000/kv';
-  
+
   // Timeout duration
   static const Duration timeoutDuration = Duration(seconds: 30);
 
@@ -62,14 +62,14 @@ class CropRecommendationRequest {
   });
 
   Map<String, dynamic> toJson() => {
-        'N': nitrogen,
-        'P': phosphorus,
-        'K': potassium,
-        'temperature': temperature,
-        'humidity': humidity,
-        'ph': ph,
-        'rainfall': rainfall,
-      };
+    'N': nitrogen,
+    'P': phosphorus,
+    'K': potassium,
+    'temperature': temperature,
+    'humidity': humidity,
+    'ph': ph,
+    'rainfall': rainfall,
+  };
 }
 
 /// Response model for crop recommendation

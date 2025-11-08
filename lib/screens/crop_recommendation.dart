@@ -233,139 +233,203 @@ class _CropRecommendationState extends State<CropRecommendation> {
   Widget _buildResultView() {
     final selectedCrop = _result!.selectedCrop;
     final recommendedCrops = _result!.recommendedCrops;
-    final summary = _result!.summary;
 
     return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Main Result Card
-          Container(
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
+          // Header
+          Row(
+            children: [
+              Icon(Icons.verified, color: Colors.green.shade600, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Recommended Crops',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      'Best matches for your soil',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Main Recommended Crop (First one with higher confidence)
+          _buildCropCard(
+            cropName: recommendedCrops[0],
+            confidence: selectedCrop.chance,
+            isTopPick: true,
+          ),
+          const SizedBox(height: 16),
+
+          // Other Recommended Crops
+          if (recommendedCrops.length > 1) ...[
+            Text(
+              'Alternative Options',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade700,
+              ),
             ),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  size: 64,
-                  color: Colors.green.shade600,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  recommendedCrops[0].toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: selectedCrop.status == 'suitable'
-                        ? Colors.green.shade50
-                        : Colors.orange.shade50,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '${(selectedCrop.chance * 100).toStringAsFixed(0)}% Confidence',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: selectedCrop.status == 'suitable'
-                          ? Colors.green.shade700
-                          : Colors.orange.shade700,
+            const SizedBox(height: 12),
+            ...recommendedCrops.skip(1).map(
+                  (crop) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildCropCard(
+                      cropName: crop,
+                      confidence: null,
+                      isTopPick: false,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                // Text(
-                //   selectedCrop.summary,
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(
-                //     fontSize: 14,
-                //     color: Colors.grey.shade600,
-                //     height: 1.5,
-                //   ),
-                // ),
-              ],
+          ],
+
+          const SizedBox(height: 24),
+
+          // Try Again Button
+          OutlinedButton.icon(
+            onPressed: () => setState(() => _result = null),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              side: BorderSide(color: Colors.grey.shade300),
+            ),
+            icon: const Icon(Icons.refresh, size: 20, color: Colors.black87),
+            label: const Text(
+              'Check Another Crop',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCropCard({
+    required String cropName,
+    required double? confidence,
+    required bool isTopPick,
+  }) {
+    final imagePath = 'assets/crops/${cropName.toLowerCase()}.jpg';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: isTopPick
+            ? Border.all(color: Colors.green.shade300, width: 2)
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Crop Image
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: AspectRatio(
+              aspectRatio: isTopPick ? 16 / 9 : 16 / 10,
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey.shade200,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      size: 48,
+                      color: Colors.grey.shade400,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
 
-          // Other Recommendations
+          // Crop Details
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.all(isTopPick ? 20 : 16),
+            child: Row(
               children: [
-                Text(
-                  'Other Suitable Crops',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade700,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ...recommendedCrops.skip(1).map((crop) => _buildCropTile(crop)),
-                const SizedBox(height: 20),
-
-                // Summary Card
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: Colors.blue.shade700,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          summary,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.blue.shade900,
-                          ),
+                      Text(
+                        _formatCropName(cropName),
+                        style: TextStyle(
+                          fontSize: isTopPick ? 22 : 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       ),
+                      if (confidence != null) ...[
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.trending_up,
+                              size: 16,
+                              color: Colors.green.shade600,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${(confidence * 100).toStringAsFixed(0)}% Match',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                // Try Again Button
-                OutlinedButton(
-                  onPressed: () => setState(() => _result = null),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                if (isTopPick)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
                     ),
-                    side: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  child: const Text(
-                    'Check Another Crop',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade600,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      'BEST',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -374,36 +438,14 @@ class _CropRecommendationState extends State<CropRecommendation> {
     );
   }
 
-  Widget _buildCropTile(String crop) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: Colors.green.shade400,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            crop.toUpperCase(),
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Colors.black87,
-            ),
-          ),
-        ],
-      ),
-    );
+  String _formatCropName(String cropName) {
+    // Convert crop name to title case (e.g., "chickpea" -> "Chickpea")
+    return cropName
+        .split(' ')
+        .map((word) => word.isEmpty
+            ? ''
+            : word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
   }
 
   Widget _buildSectionHeader(String title) {
