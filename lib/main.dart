@@ -184,6 +184,7 @@ class _MyAppState extends State<MyApp> {
         Locale('te'), // Telugu
       ],
       home: _isSetupComplete ? const App() : const IntroScreen(),
+      // home: const IntroScreen(),
     );
   }
 }
