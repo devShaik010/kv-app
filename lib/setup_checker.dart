@@ -1,13 +1,12 @@
 // setup_checker.dart
 import 'package:flutter/material.dart';
+import 'package:kisanverse/screens/app.dart';
+import 'package:kisanverse/screens/farmer_info_input.dart';
 import 'package:kisanverse/screens/home.dart';
-import 'package:kisanverse/screens/model/farmer_info_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class SetupChecker extends StatefulWidget {
-  const SetupChecker({Key? key}) : super(key: key);
+  const SetupChecker({super.key});
 
   @override
   State<SetupChecker> createState() => _SetupCheckerState();
@@ -34,7 +33,7 @@ class _SetupCheckerState extends State<SetupChecker> {
         // Navigate to Home
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          MaterialPageRoute(builder: (context) => const App()),
         );
       } else {
         // Navigate to Farmer Info Input
@@ -79,15 +78,10 @@ class _SetupCheckerState extends State<SetupChecker> {
             const SizedBox(height: 8),
             const Text(
               'Manage your farm efficiently',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.white70),
             ),
             const SizedBox(height: 40),
-            const CircularProgressIndicator(
-              color: Colors.white,
-            ),
+            const CircularProgressIndicator(color: Colors.white),
           ],
         ),
       ),

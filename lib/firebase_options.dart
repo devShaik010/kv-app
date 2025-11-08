@@ -41,21 +41,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDQ95eN58c6wAazC17dAtnEu0aN2g6Lrhg',
-    appId: '1:611775071009:web:aab00753a20a32a4747460',
-    messagingSenderId: '611775071009',
-    projectId: 'kv-app-db6ba',
-    authDomain: 'kv-app-db6ba.firebaseapp.com',
-    storageBucket: 'kv-app-db6ba.firebasestorage.app',
-    measurementId: 'G-ZPBYNR6XMP',
+    apiKey: 'AIzaSyCCaCISvU85o77m836QfBDrpLWXmlUunSM',
+    appId: '1:20529786309:web:d0ae520231b2e1a0662fac',
+    messagingSenderId: '20529786309',
+    projectId: 'kv-app-542a2',
+    authDomain: 'kv-app-542a2.firebaseapp.com',
+    storageBucket: 'kv-app-542a2.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAcSam3W8wTzWJ07xtc1wJOsz6bSE5YpA8',
-    appId: '1:611775071009:android:4010a7ad26a32e25747460',
-    messagingSenderId: '611775071009',
-    projectId: 'kv-app-db6ba',
-    storageBucket: 'kv-app-db6ba.firebasestorage.app',
+    apiKey: 'AIzaSyAcW4XPCA-0rgVR33f06wBjXptueOEecEQ',
+    appId: '1:20529786309:android:4afb14f903542de7662fac',
+    messagingSenderId: '20529786309',
+    projectId: 'kv-app-542a2',
+    storageBucket: 'kv-app-542a2.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

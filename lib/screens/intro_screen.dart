@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kisanverse/screens/model/farmer_info_input.dart';
+import 'package:kisanverse/screens/farmer_info_input.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _IntroScreenState extends State<IntroScreen> {
               setState(() => _currentIndex = index);
             },
             children: [
-              for (var page in pages)
+              for (var _ in pages)
                 Image.asset(
                   "assets/intro_bg.png",
                   fit: BoxFit.cover,

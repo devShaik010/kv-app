@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
 
-import 'package:kisanverse/main.dart';
 
 class LanguageSettingsScreen extends StatelessWidget {
-  const LanguageSettingsScreen({Key? key}) : super(key: key);
+  const LanguageSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +54,9 @@ class LanguageSettingsScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: InkWell(
                     onTap: () async {
-                      // Set the new locale
-                      MyApp.of(context)?.setLocale(Locale(language['code']!));
-                      
-                      // Wait a bit for the locale to be saved
-                      await Future.delayed(const Duration(milliseconds: 100));
-                      
-                      // Pop back to previous screen
+                      // Return the selected locale to the previous screen so it can update the app
                       if (context.mounted) {
-                        Navigator.pop(context);
+                        Navigator.pop(context, Locale(language['code']!));
                       }
                     },
                     borderRadius: BorderRadius.circular(12),
@@ -80,7 +73,7 @@ class LanguageSettingsScreen extends StatelessWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withAlpha(13),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -93,7 +86,7 @@ class LanguageSettingsScreen extends StatelessWidget {
                             height: 50,
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? const Color(0xFF4CAF50).withOpacity(0.1)
+                                  ? const Color(0xFF4CAF50).withAlpha(25)
                                   : Colors.grey[100],
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -142,7 +135,7 @@ class LanguageSettingsScreen extends StatelessWidget {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

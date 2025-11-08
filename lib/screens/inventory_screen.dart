@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class InventoryScreen extends StatelessWidget {
-  const InventoryScreen({Key? key}) : super(key: key);
+  const InventoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class InventoryScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       const Text(
-                        'Oakdale Ranch',
+                        'Inventory',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,

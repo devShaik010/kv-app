@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "611775071009",
-    "project_id": "kv-app-db6ba",
-    "storage_bucket": "kv-app-db6ba.firebasestorage.app"
+    "project_number": "20529786309",
+    "project_id": "kv-app-542a2",
+    "storage_bucket": "kv-app-542a2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:611775071009:android:4010a7ad26a32e25747460",
+        "mobilesdk_app_id": "1:20529786309:android:4afb14f903542de7662fac",
         "android_client_info": {
           "package_name": "com.example.kisanverse"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAcSam3W8wTzWJ07xtc1wJOsz6bSE5YpA8"
+          "current_key": "AIzaSyAcW4XPCA-0rgVR33f06wBjXptueOEecEQ"
         }
       ],
       "services": {

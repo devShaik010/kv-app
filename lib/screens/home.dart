@@ -4,89 +4,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:kisanverse/screens/crop_screen.dart';
-import 'package:kisanverse/screens/inventory_screen.dart';
-import 'package:kisanverse/screens/profile_screen.dart';
+import 'package:kisanverse/controllers/navigation_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const CropsScreen(),
-    const InventoryScreen(),
-    const ProfileScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(Icons.home_rounded, 'Home', 0),
-                _buildNavItem(Icons.spa_rounded, 'Crops', 1),
-                _buildNavItem(Icons.inventory_2_rounded, 'Inventory', 2),
-                _buildNavItem(Icons.person_rounded, 'Profile', 3),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    final isSelected = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFE8F5E9) : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(
-          icon,
-          color: isSelected ? const Color(0xFF4CAF50) : Colors.grey,
-          size: 28,
-        ),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? weatherData;
   bool isLoading = true;
   String errorMessage = '';
@@ -115,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (status.isPermanentlyDenied) {
         setState(() {
-          errorMessage = 'Location permission denied. Please enable in settings.';
+          errorMessage =
+              'Location permission denied. Please enable in settings.';
           isLoading = false;
         });
         return;
@@ -139,7 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks[0];
           setState(() {
-            locationName = place.locality ?? place.subAdministrativeArea ?? 'Unknown Location';
+            locationName =
+                place.locality ??
+                place.subAdministrativeArea ??
+                'Unknown Location';
           });
         }
 
@@ -173,11 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
       final response = await http.get(
         Uri.parse('https://wttr.in/$latitude,$longitude?format=j1'),
       );
-      
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final current = data['current_condition'][0];
-        
+
         setState(() {
           weatherData = {
             'temp': current['temp_C'],
@@ -204,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final navController = Provider.of<NavigationController>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -271,8 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 isLoading
                     ? _buildLoadingWeatherCard()
                     : weatherData != null
-                        ? _buildWeatherCard()
-                        : _buildErrorWeatherCard(),
+                    ? _buildWeatherCard()
+                    : _buildErrorWeatherCard(),
                 const SizedBox(height: 30),
 
                 // Manage your fields title
@@ -291,19 +225,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(
                       child: _buildMenuCard(
+                        navController,
                         'My Farm',
                         Icons.landscape_rounded,
                         const Color(0xFF81C784),
                         const Color(0xFF66BB6A),
+                        0,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildMenuCard(
+                        navController,
                         'Crops',
                         Icons.spa_rounded,
                         const Color(0xFF4DB6AC),
                         const Color(0xFF26A69A),
+                        1,
                       ),
                     ),
                   ],
@@ -313,19 +251,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(
                       child: _buildMenuCard(
+                        navController,
                         'Inventory',
                         Icons.description_rounded,
                         const Color(0xFF64B5F6),
                         const Color(0xFF42A5F5),
+                        2,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildMenuCard(
+                        navController,
                         'Balance',
                         Icons.account_balance_wallet_rounded,
                         const Color(0xFFFFD54F),
                         const Color(0xFFFFCA28),
+                        0,
                       ),
                     ),
                   ],
@@ -346,10 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFF9C4),
-            Color(0xFFFFE082),
-          ],
+          colors: [Color(0xFFFFF9C4), Color(0xFFFFE082)],
         ),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -359,10 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: 16),
           Text(
             'Fetching weather...',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black54,
-            ),
+            style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ],
       ),
@@ -377,10 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFF9C4),
-            Color(0xFFFFE082),
-          ],
+          colors: [Color(0xFFFFF9C4), Color(0xFFFFE082)],
         ),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -390,10 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           Text(
             errorMessage.isNotEmpty ? errorMessage : 'Unable to fetch weather',
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black54,
-            ),
+            style: const TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
@@ -421,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -433,52 +363,65 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${temp}°C',
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$temp°C',
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
-                  ),
-                  Text(
-                    condition,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
+                    Text(
+                      condition,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Icon(
-                weatherIcon,
-                size: 60,
-                color: Colors.orange.shade700,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildWeatherInfo('Humidity', _getHumidityStatus(humidity)),
-              _buildWeatherInfo('Soil Moisture', _getSoilMoistureStatus(precipitation)),
-              _buildWeatherInfo('Precipitation', _getPrecipitationStatus(precipitation)),
-            ],
+                  ],
+                ),
+                Icon(weatherIcon, size: 60, color: Colors.orange.shade700),
+              ],
+            ),
           ),
           const SizedBox(height: 10),
-          // Decorative grass
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildWeatherInfo('Humidity', _getHumidityStatus(humidity)),
+                _buildWeatherInfo(
+                  'Soil Moisture',
+                  _getSoilMoistureStatus(precipitation),
+                ),
+                _buildWeatherInfo(
+                  'Precipitation',
+                  _getPrecipitationStatus(precipitation),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
           Align(
             alignment: Alignment.bottomRight,
-            child: CustomPaint(
-              size: const Size(100, 30),
-              painter: GrassPainter(),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
+              child: CustomPaint(
+                size: Size(MediaQuery.sizeOf(context).width, 30),
+                painter: GrassPainter(),
+              ),
             ),
           ),
         ],
@@ -538,10 +481,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.black54,
-          ),
+          style: const TextStyle(fontSize: 12, color: Colors.black54),
         ),
         const SizedBox(height: 4),
         Container(
@@ -563,50 +503,58 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMenuCard(String title, IconData icon, Color lightColor, Color darkColor) {
-    return Container(
-      height: 140,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [lightColor, darkColor],
+  Widget _buildMenuCard(
+    controller,
+    String title,
+    IconData icon,
+    Color lightColor,
+    Color darkColor,
+    int index,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        controller.updateIndex(2);
+      },
+      child: Container(
+        height: 140,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(13),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [lightColor, darkColor],
+                ),
+                borderRadius: BorderRadius.circular(15),
               ),
-              borderRadius: BorderRadius.circular(15),
+              child: Icon(icon, size: 36, color: Colors.white),
             ),
-            child: Icon(
-              icon,
-              size: 36,
-              color: Colors.white,
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -620,14 +568,34 @@ class GrassPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path();
-    
+
     // Create grass silhouette
     path.moveTo(0, size.height);
     path.lineTo(0, size.height * 0.3);
-    path.quadraticBezierTo(size.width * 0.15, 0, size.width * 0.25, size.height * 0.4);
-    path.quadraticBezierTo(size.width * 0.35, size.height * 0.7, size.width * 0.5, size.height * 0.2);
-    path.quadraticBezierTo(size.width * 0.65, -size.height * 0.1, size.width * 0.75, size.height * 0.5);
-    path.quadraticBezierTo(size.width * 0.85, size.height * 0.8, size.width, size.height * 0.3);
+    path.quadraticBezierTo(
+      size.width * 0.15,
+      0,
+      size.width * 0.25,
+      size.height * 0.4,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.35,
+      size.height * 0.7,
+      size.width * 0.5,
+      size.height * 0.2,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.65,
+      -size.height * 0.1,
+      size.width * 0.75,
+      size.height * 0.5,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.85,
+      size.height * 0.8,
+      size.width,
+      size.height * 0.3,
+    );
     path.lineTo(size.width, size.height);
     path.close();
 
@@ -638,9 +606,24 @@ class GrassPainter extends CustomPainter {
     final path2 = Path();
     path2.moveTo(0, size.height);
     path2.lineTo(0, size.height * 0.6);
-    path2.quadraticBezierTo(size.width * 0.2, size.height * 0.4, size.width * 0.3, size.height * 0.7);
-    path2.quadraticBezierTo(size.width * 0.5, size.height * 0.9, size.width * 0.7, size.height * 0.6);
-    path2.quadraticBezierTo(size.width * 0.85, size.height * 0.5, size.width, size.height * 0.7);
+    path2.quadraticBezierTo(
+      size.width * 0.2,
+      size.height * 0.4,
+      size.width * 0.3,
+      size.height * 0.7,
+    );
+    path2.quadraticBezierTo(
+      size.width * 0.5,
+      size.height * 0.9,
+      size.width * 0.7,
+      size.height * 0.6,
+    );
+    path2.quadraticBezierTo(
+      size.width * 0.85,
+      size.height * 0.5,
+      size.width,
+      size.height * 0.7,
+    );
     path2.lineTo(size.width, size.height);
     path2.close();
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kisanverse/screens/model/farmer_info_input.dart';
+import 'package:kisanverse/models/farmer_info.dart';
+import 'package:kisanverse/screens/farmer_info_input.dart';
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -98,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(30),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF4CAF50).withOpacity(0.3),
+                                color: const Color(0xFF4CAF50).withAlpha(77),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -165,12 +166,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: const Color(0xFF9C27B0),
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoCard(
-                        icon: Icons.stars_outlined,
-                        title: 'Experience',
-                        value: _farmerInfo?.experience ?? 'N/A',
-                        color: const Color(0xFFFFC107),
-                      ),
+                      // _buildInfoCard(
+                      //   icon: Icons.stars_outlined,
+                      //   title: 'Experience',
+                      //   value: _farmerInfo?.experience ?? 'N/A',
+                      //   color: const Color(0xFFFFC107),
+                      // ),
                     ],
                   ),
                 ),
@@ -192,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -204,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withAlpha(25),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
