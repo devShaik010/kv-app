@@ -71,13 +71,6 @@ class LanguageSettingsScreen extends StatelessWidget {
                               : Colors.grey[200]!,
                           width: isSelected ? 2 : 1,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(13),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
                       ),
                       child: Row(
                         children: [

@@ -357,13 +357,12 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(13),
-                    blurRadius: 10,
-                    offset: const Offset(0, -5),
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey[200]!,
+                    width: 1,
                   ),
-                ],
+                ),
               ),
               child: Row(
                 children: [

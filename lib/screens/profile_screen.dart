@@ -97,13 +97,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               colors: [Color(0xFF4CAF50), Color(0xFF388E3C)],
                             ),
                             borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF4CAF50).withAlpha(77),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
                           ),
                           child: const Icon(
                             Icons.person_rounded,
@@ -191,13 +184,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(13),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        border: Border.all(
+          color: Colors.grey[200]!,
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
