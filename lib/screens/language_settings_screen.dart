@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
+import 'package:kisanverse/main.dart';
 
 
 class LanguageSettingsScreen extends StatelessWidget {
@@ -42,21 +43,25 @@ class LanguageSettingsScreen extends StatelessWidget {
             children: [
               Text(
                 l10n.selectLanguage,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
+                style: const TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 20),
               ...languages.map((language) {
-                final isSelected = currentLocale.languageCode == language['code'];
+                final isSelected =
+                    currentLocale.languageCode == language['code'];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: InkWell(
                     onTap: () async {
-                      // Return the selected locale to the previous screen so it can update the app
+                      // Update the app locale using MyApp's setLocale method
+                      final myAppState = MyApp.of(context);
+                      if (myAppState != null) {
+                        myAppState.setLocale(Locale(language['code']!));
+                      }
+                      // Navigate back after a short delay to show the selection
+                      await Future.delayed(const Duration(milliseconds: 300));
                       if (context.mounted) {
-                        Navigator.pop(context, Locale(language['code']!));
+                        Navigator.pop(context);
                       }
                     },
                     borderRadius: BorderRadius.circular(12),

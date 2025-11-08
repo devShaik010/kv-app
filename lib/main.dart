@@ -88,9 +88,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const CircularProgressIndicator(
-                  color: Colors.white,
-                ),
+                const CircularProgressIndicator(color: Colors.white),
               ],
             ),
           ),
@@ -168,7 +166,10 @@ class _MyAppState extends State<MyApp> {
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Color(0xFFD32F2F)),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
         ),
       ),
       localizationsDelegates: const [

@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kisanverse/controllers/navigation_controller.dart';
+import 'package:kisanverse/screens/language_settings_screen.dart';
+import 'package:kisanverse/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +21,7 @@ class _HomeState extends State<Home> {
   Map<String, dynamic>? weatherData;
   bool isLoading = true;
   String errorMessage = '';
-  String locationName = 'Fetching location...';
+  String locationName = '';
   double? latitude;
   double? longitude;
 
@@ -30,9 +32,11 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _initializeLocation() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       isLoading = true;
       errorMessage = '';
+      locationName = l10n.fetchingLocation;
     });
 
     try {
@@ -44,8 +48,7 @@ class _HomeState extends State<Home> {
 
       if (status.isPermanentlyDenied) {
         setState(() {
-          errorMessage =
-              'Location permission denied. Please enable in settings.';
+          errorMessage = l10n.locationPermissionDenied;
           isLoading = false;
         });
         return;
@@ -80,22 +83,23 @@ class _HomeState extends State<Home> {
         await _fetchWeather();
       } else {
         setState(() {
-          errorMessage = 'Location permission denied';
+          errorMessage = l10n.locationPermissionDenied;
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Error getting location: ${e.toString()}';
+        errorMessage = '${l10n.errorGettingLocation}: ${e.toString()}';
         isLoading = false;
       });
     }
   }
 
   Future<void> _fetchWeather() async {
+    final l10n = AppLocalizations.of(context)!;
     if (latitude == null || longitude == null) {
       setState(() {
-        errorMessage = 'Location not available';
+        errorMessage = l10n.errorGettingLocation;
         isLoading = false;
       });
       return;
@@ -123,13 +127,13 @@ class _HomeState extends State<Home> {
         });
       } else {
         setState(() {
-          errorMessage = 'Failed to fetch weather data';
+          errorMessage = l10n.unableToFetchWeather;
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Unable to fetch weather: ${e.toString()}';
+        errorMessage = '${l10n.unableToFetchWeather}: ${e.toString()}';
         isLoading = false;
       });
     }
@@ -137,6 +141,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final navController = Provider.of<NavigationController>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -166,9 +171,9 @@ class _HomeState extends State<Home> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Kisanverse',
-                              style: TextStyle(
+                            Text(
+                              l10n.appTitle,
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black87,
@@ -188,12 +193,22 @@ class _HomeState extends State<Home> {
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.refresh),
-                          onPressed: _initializeLocation,
+                          icon: const Icon(Icons.language),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const LanguageSettingsScreen(),
+                              ),
+                            );
+                          },
+                          tooltip: 'Change Language',
                         ),
                         IconButton(
-                          icon: const Icon(Icons.more_vert),
-                          onPressed: () {},
+                          icon: const Icon(Icons.refresh),
+                          onPressed: _initializeLocation,
+                          tooltip: 'Refresh Weather',
                         ),
                       ],
                     ),
@@ -210,9 +225,9 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 30),
 
                 // Manage your fields title
-                const Text(
-                  'Manage your fields',
-                  style: TextStyle(
+                Text(
+                  l10n.manageYourFields,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
@@ -226,7 +241,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: _buildMenuCard(
                         navController,
-                        'My Farm',
+                        l10n.myFarm,
                         Icons.landscape_rounded,
                         const Color(0xFF81C784),
                         const Color(0xFF66BB6A),
@@ -237,7 +252,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: _buildMenuCard(
                         navController,
-                        'Crops',
+                        l10n.crops,
                         Icons.spa_rounded,
                         const Color(0xFF4DB6AC),
                         const Color(0xFF26A69A),
@@ -252,7 +267,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: _buildMenuCard(
                         navController,
-                        'Inventory',
+                        l10n.inventory,
                         Icons.description_rounded,
                         const Color(0xFF64B5F6),
                         const Color(0xFF42A5F5),
@@ -263,7 +278,7 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: _buildMenuCard(
                         navController,
-                        'Balance',
+                        l10n.balance,
                         Icons.account_balance_wallet_rounded,
                         const Color(0xFFFFD54F),
                         const Color(0xFFFFCA28),
@@ -281,6 +296,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildLoadingWeatherCard() {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -292,13 +308,13 @@ class _HomeState extends State<Home> {
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Column(
+      child: Column(
         children: [
-          CircularProgressIndicator(color: Colors.orange),
-          SizedBox(height: 16),
+          const CircularProgressIndicator(color: Colors.orange),
+          const SizedBox(height: 16),
           Text(
-            'Fetching weather...',
-            style: TextStyle(fontSize: 16, color: Colors.black54),
+            l10n.fetchingWeather,
+            style: const TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ],
       ),
@@ -306,6 +322,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildErrorWeatherCard() {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -322,14 +339,14 @@ class _HomeState extends State<Home> {
           const Icon(Icons.cloud_off, size: 60, color: Colors.black54),
           const SizedBox(height: 16),
           Text(
-            errorMessage.isNotEmpty ? errorMessage : 'Unable to fetch weather',
+            errorMessage.isNotEmpty ? errorMessage : l10n.unableToFetchWeather,
             style: const TextStyle(fontSize: 16, color: Colors.black54),
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
             onPressed: _initializeLocation,
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text(l10n.retry),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange,
               foregroundColor: Colors.white,
@@ -341,6 +358,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildWeatherCard() {
+    final l10n = AppLocalizations.of(context)!;
     final weatherCode = weatherData!['weatherCode'];
     final weatherIcon = _getWeatherIcon(weatherCode);
     final gradientColors = _getWeatherGradient(weatherCode);
@@ -398,13 +416,13 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildWeatherInfo('Humidity', _getHumidityStatus(humidity)),
+                _buildWeatherInfo(l10n.humidity, _getHumidityStatus(humidity)),
                 _buildWeatherInfo(
-                  'Soil Moisture',
+                  l10n.soilMoisture,
                   _getSoilMoistureStatus(precipitation),
                 ),
                 _buildWeatherInfo(
-                  'Precipitation',
+                  l10n.precipitation,
                   _getPrecipitationStatus(precipitation),
                 ),
               ],
@@ -457,22 +475,25 @@ class _HomeState extends State<Home> {
   }
 
   String _getHumidityStatus(int humidity) {
-    if (humidity < 30) return 'Low';
-    if (humidity < 60) return 'Good';
-    return 'High';
+    final l10n = AppLocalizations.of(context)!;
+    if (humidity < 30) return l10n.low;
+    if (humidity < 60) return l10n.good;
+    return l10n.high;
   }
 
   String _getSoilMoistureStatus(double precipitation) {
-    if (precipitation == 0) return 'Dry';
-    if (precipitation < 5) return 'Good';
-    return 'Wet';
+    final l10n = AppLocalizations.of(context)!;
+    if (precipitation == 0) return l10n.dry;
+    if (precipitation < 5) return l10n.good;
+    return l10n.wet;
   }
 
   String _getPrecipitationStatus(double precipitation) {
-    if (precipitation == 0) return 'None';
-    if (precipitation < 2.5) return 'Low';
-    if (precipitation < 10) return 'Medium';
-    return 'High';
+    final l10n = AppLocalizations.of(context)!;
+    if (precipitation == 0) return l10n.none;
+    if (precipitation < 2.5) return l10n.low;
+    if (precipitation < 10) return l10n.medium;
+    return l10n.high;
   }
 
   Widget _buildWeatherInfo(String label, String value) {
@@ -520,10 +541,7 @@ class _HomeState extends State<Home> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Colors.grey[200]!,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.grey[200]!, width: 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

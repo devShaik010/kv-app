@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kisanverse/models/farmer_info.dart';
 import 'package:kisanverse/screens/farmer_info_input.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -50,7 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 45,
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
-                                    colors: [Color(0xFF4CAF50), Color(0xFF388E3C)],
+                                    colors: [
+                                      Color(0xFF4CAF50),
+                                      Color(0xFF388E3C),
+                                    ],
                                   ),
                                   shape: BoxShape.circle,
                                 ),
@@ -184,10 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey[200]!,
-          width: 1,
-        ),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
       child: Row(
         children: [
@@ -198,11 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: color.withAlpha(25),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
-            ),
+            child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(width: 16),
           Expanded(

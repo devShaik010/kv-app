@@ -289,7 +289,9 @@ class _CropRecommendationState extends State<CropRecommendation> {
               ),
             ),
             const SizedBox(height: 12),
-            ...recommendedCrops.skip(1).map(
+            ...recommendedCrops
+                .skip(1)
+                .map(
                   (crop) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _buildCropCard(
@@ -442,9 +444,11 @@ class _CropRecommendationState extends State<CropRecommendation> {
     // Convert crop name to title case (e.g., "chickpea" -> "Chickpea")
     return cropName
         .split(' ')
-        .map((word) => word.isEmpty
-            ? ''
-            : word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .map(
+          (word) => word.isEmpty
+              ? ''
+              : word[0].toUpperCase() + word.substring(1).toLowerCase(),
+        )
         .join(' ');
   }
 

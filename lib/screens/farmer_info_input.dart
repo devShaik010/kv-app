@@ -300,24 +300,28 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
                       Row(
                         children: [
                           Container(
-                          width: 75,
-                          height: 75,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Colors.brown[800]!, Colors.brown[800]!],
+                            width: 75,
+                            height: 75,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.brown[800]!,
+                                  Colors.brown[800]!,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            borderRadius: BorderRadius.circular(15),
+                            child: Icon(
+                              Icons.agriculture_rounded,
+                              size: 40,
+                              color: Colors.white,
+                            ),
                           ),
-                          child: Icon(
-                            Icons.agriculture_rounded,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),  
-                        SizedBox(width: 16),
-                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "Welcome!",
@@ -328,13 +332,15 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                "Let's start by knowing you better",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
+                              FittedBox(
+                                child: Text(
+                                  "Let's start by knowing you better",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black54,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -358,10 +364,7 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  top: BorderSide(
-                    color: Colors.grey[200]!,
-                    width: 1,
-                  ),
+                  top: BorderSide(color: Colors.grey[200]!, width: 1),
                 ),
               ),
               child: Row(
@@ -410,7 +413,7 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
                               ),
                             )
                           : Text(
-                             'Continue',
+                              'Continue',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

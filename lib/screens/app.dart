@@ -28,12 +28,7 @@ class _AppState extends State<App> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(
-            top: BorderSide(
-              color: Colors.grey[200]!,
-              width: 1,
-            ),
-          ),
+          border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1)),
         ),
         child: SafeArea(
           child: Padding(
