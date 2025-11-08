@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
     try {
       // Get weather using coordinates
       final response = await http.get(
-        Uri.parse('https://wttr.in/$latitude,$longitude?format=j1'),
+        Uri.parse('http://wttr.in/$latitude,$longitude?format=j1'),
       );
 
       if (response.statusCode == 200) {

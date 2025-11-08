@@ -333,10 +333,11 @@ class _FarmerInfoInputState extends State<FarmerInfoInput> {
                               ),
                               const SizedBox(height: 8),
                               FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text(
                                   "Let's start by knowing you better",
                                   style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     color: Colors.black54,
                                   ),
                                   textAlign: TextAlign.center,
