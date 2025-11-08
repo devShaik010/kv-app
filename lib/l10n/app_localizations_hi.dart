@@ -52,6 +52,18 @@ class AppLocalizationsHi extends AppLocalizations {
   String get balance => 'शेष राशि';
 
   @override
+  String get cropRecommendation => 'फसल सिफारिश';
+
+  @override
+  String get yieldPrediction => 'उपज पूर्वानुमान';
+
+  @override
+  String get aiBot => 'एआई बॉट';
+
+  @override
+  String get governmentSchemes => 'सरकारी योजनाएं';
+
+  @override
   String get humidity => 'आर्द्रता';
 
   @override

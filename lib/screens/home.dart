@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kisanverse/controllers/navigation_controller.dart';
 import 'package:kisanverse/screens/language_settings_screen.dart';
+import 'package:kisanverse/screens/crop_recommendation.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -142,7 +143,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final navController = Provider.of<NavigationController>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -239,24 +239,24 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildMenuCard(
-                        navController,
-                        l10n.myFarm,
-                        Icons.landscape_rounded,
+                      child: _buildNavigableMenuCard(
+                        context,
+                        l10n.cropRecommendation,
+                        Icons.agriculture_rounded,
                         const Color(0xFF81C784),
                         const Color(0xFF66BB6A),
-                        0,
+                        '/crop-recommendation',
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildMenuCard(
-                        navController,
-                        l10n.crops,
-                        Icons.spa_rounded,
+                      child: _buildNavigableMenuCard(
+                        context,
+                        l10n.yieldPrediction,
+                        Icons.trending_up_rounded,
                         const Color(0xFF4DB6AC),
                         const Color(0xFF26A69A),
-                        1,
+                        null,
                       ),
                     ),
                   ],
@@ -265,24 +265,24 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildMenuCard(
-                        navController,
-                        l10n.inventory,
-                        Icons.description_rounded,
+                      child: _buildNavigableMenuCard(
+                        context,
+                        l10n.aiBot,
+                        Icons.smart_toy_rounded,
                         const Color(0xFF64B5F6),
                         const Color(0xFF42A5F5),
-                        2,
+                        null,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildMenuCard(
-                        navController,
-                        l10n.balance,
-                        Icons.account_balance_wallet_rounded,
+                      child: _buildNavigableMenuCard(
+                        context,
+                        l10n.governmentSchemes,
+                        Icons.policy_rounded,
                         const Color(0xFFFFD54F),
                         const Color(0xFFFFCA28),
-                        0,
+                        null,
                       ),
                     ),
                   ],
@@ -524,17 +524,33 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildMenuCard(
-    controller,
+  Widget _buildNavigableMenuCard(
+    BuildContext context,
     String title,
     IconData icon,
     Color lightColor,
     Color darkColor,
-    int index,
+    String? route,
   ) {
     return GestureDetector(
       onTap: () {
-        controller.updateIndex(2);
+        if (route == '/crop-recommendation') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CropRecommendation(),
+            ),
+          );
+        } else {
+          // Show coming soon message for features not yet implemented
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$title - Coming Soon!'),
+              duration: const Duration(seconds: 2),
+              backgroundColor: const Color(0xFF4CAF50),
+            ),
+          );
+        }
       },
       child: Container(
         height: 140,
@@ -562,8 +578,9 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 12),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: Colors.black87,
               ),

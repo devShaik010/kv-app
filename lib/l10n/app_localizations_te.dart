@@ -52,6 +52,18 @@ class AppLocalizationsTe extends AppLocalizations {
   String get balance => 'బ్యాలెన్స్';
 
   @override
+  String get cropRecommendation => 'పంట సిఫార్సు';
+
+  @override
+  String get yieldPrediction => 'దిగుబడి అంచనా';
+
+  @override
+  String get aiBot => 'AI బాట్';
+
+  @override
+  String get governmentSchemes => 'ప్రభుత్వ పథకాలు';
+
+  @override
   String get humidity => 'తేమ';
 
   @override

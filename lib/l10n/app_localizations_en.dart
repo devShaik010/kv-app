@@ -52,6 +52,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get balance => 'Balance';
 
   @override
+  String get cropRecommendation => 'Crop Recommendation';
+
+  @override
+  String get yieldPrediction => 'Yield Prediction';
+
+  @override
+  String get aiBot => 'AI Bot';
+
+  @override
+  String get governmentSchemes => 'Government Schemes';
+
+  @override
   String get humidity => 'Humidity';
 
   @override

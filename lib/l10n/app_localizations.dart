@@ -184,6 +184,30 @@ abstract class AppLocalizations {
   /// **'Balance'**
   String get balance;
 
+  /// No description provided for @cropRecommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Recommendation'**
+  String get cropRecommendation;
+
+  /// No description provided for @yieldPrediction.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield Prediction'**
+  String get yieldPrediction;
+
+  /// No description provided for @aiBot.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Bot'**
+  String get aiBot;
+
+  /// No description provided for @governmentSchemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Government Schemes'**
+  String get governmentSchemes;
+
   /// No description provided for @humidity.
   ///
   /// In en, this message translates to:

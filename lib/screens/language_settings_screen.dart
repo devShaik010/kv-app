@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
 import 'package:kisanverse/main.dart';
 
-
 class LanguageSettingsScreen extends StatelessWidget {
   const LanguageSettingsScreen({super.key});
 
