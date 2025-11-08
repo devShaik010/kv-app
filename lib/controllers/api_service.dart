@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kisanverse/models/yield_prediction_model.dart';
 
 class ApiService {
-  // Base URL - change this for production
-  static const String baseUrl = 'http://192.168.137.58:8000/kv';
+  // Base URL - IMPORTANT: Update based on your setup
+  // Option 1 - Android Emulator: 'http://10.0.2.2:8000/kv'
+  // Option 2 - Physical Device (Ethernet): 'http://172.16.221.60:8000/kv'
+  // Option 3 - Physical Device (Hotspot): 'http://192.168.137.1:8000/kv'
+  // Option 4 - WSL Backend: Check WSL IP with 'wsl hostname -I'
+  static const String baseUrl = 'http://192.168.137.58:8000/kv'; // Default for Android emulator
 
   // Timeout duration
   static const Duration timeoutDuration = Duration(seconds: 30);
@@ -35,6 +40,70 @@ class ApiService {
       }
     } on http.ClientException catch (e) {
       throw ApiException('Network error: ${e.message}', 0);
+    } catch (e) {
+      throw ApiException('Unexpected error: ${e.toString()}', 0);
+    }
+  }
+
+  /// Get yield prediction based on crop and farm data
+  Future<YieldPredictionResponse> getYieldPrediction(
+    YieldPredictionRequest request,
+  ) async {
+    try {
+      print('🌐 Making request to: $baseUrl/yieldPredict');
+      print('📦 Request body: ${jsonEncode(request.toJson())}');
+      
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/yieldPredict'),
+            headers: {
+              'accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(request.toJson()),
+          )
+          .timeout(
+            timeoutDuration,
+            onTimeout: () {
+              throw ApiException(
+                '⏱️ Connection timeout!\n\n'
+                'Current URL: $baseUrl\n\n'
+                'Troubleshooting:\n'
+                '✓ Ensure backend is running\n'
+                '✓ Check if using Android Emulator: Use 10.0.2.2\n'
+                '✓ Check if using Physical Device: Update to your PC IP\n'
+                '✓ Check firewall settings',
+                408,
+              );
+            },
+          );
+
+      print('✅ Response status: ${response.statusCode}');
+      print('📄 Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return YieldPredictionResponse.fromJson(data);
+      } else {
+        throw ApiException(
+          'Failed to get yield prediction. Status: ${response.statusCode}\nResponse: ${response.body}',
+          response.statusCode,
+        );
+      }
+    } on http.ClientException catch (e) {
+      throw ApiException(
+        '🚫 No route to host!\n\n'
+        'Current URL: $baseUrl\n'
+        'Error: ${e.message}\n\n'
+        '💡 Solutions:\n'
+        '• For Android Emulator: Use http://10.0.2.2:8000/kv\n'
+        '• For Physical Device: Use your PC IP (e.g., http://172.16.221.60:8000/kv)\n'
+        '• Ensure backend is running on port 8000\n'
+        '• Check Windows Firewall allows port 8000',
+        0,
+      );
+    } on ApiException {
+      rethrow;
     } catch (e) {
       throw ApiException('Unexpected error: ${e.toString()}', 0);
     }

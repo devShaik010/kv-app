@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kisanverse/screens/language_settings_screen.dart';
 import 'package:kisanverse/screens/crop_recommendation.dart';
-import 'package:kisanverse/screens/yield_prediction.dart';
+import 'package:kisanverse/screens/yield_prediction_screen.dart';
 import 'package:kisanverse/screens/ai_bot_screen.dart';
 import 'package:kisanverse/screens/government_schemes_screen.dart';
 import 'package:kisanverse/l10n/app_localizations.dart';
@@ -540,7 +540,7 @@ class _HomeState extends State<Home> {
         if (route == '/crop-recommendation') {
           screen = const CropRecommendation();
         } else if (route == '/yield-prediction') {
-          screen = const YieldPrediction();
+          screen = const YieldPredictionScreen();
         } else if (route == '/ai-bot') {
           screen = const AiBotScreen();
         } else if (route == '/government-schemes') {
