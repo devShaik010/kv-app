@@ -5,7 +5,8 @@ class GovernmentSchemesScreen extends StatefulWidget {
   const GovernmentSchemesScreen({super.key});
 
   @override
-  State<GovernmentSchemesScreen> createState() => _GovernmentSchemesScreenState();
+  State<GovernmentSchemesScreen> createState() =>
+      _GovernmentSchemesScreenState();
 }
 
 class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
@@ -37,35 +38,43 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
   final List<Scheme> schemes = [
     Scheme(
       name: 'PM-KISAN',
-      description: 'Direct income support of ₹6000 per year to all farmer families',
+      description:
+          'Direct income support of ₹6000 per year to all farmer families',
       eligibility: 'All landholding farmer families',
       benefits: '₹2000 in three equal installments',
       color: const Color(0xFF4CAF50),
       icon: Icons.account_balance_wallet_rounded,
+      url: 'https://pmkisan.gov.in/homenew.aspx'
     ),
     Scheme(
       name: 'Kisan Credit Card (KCC)',
-      description: 'Credit facility for farmers to meet their agricultural needs',
+      description:
+          'Credit facility for farmers to meet their agricultural needs',
       eligibility: 'Farmers with land ownership documents',
       benefits: 'Low interest loans up to ₹3 lakh',
       color: const Color(0xFF2196F3),
       icon: Icons.credit_card_rounded,
+      url: 'https://www.rbi.org.in/Scripts/BS_ViewKisanCreditCard.aspx'
     ),
     Scheme(
       name: 'Pradhan Mantri Fasal Bima Yojana',
-      description: 'Insurance coverage for crop damage due to natural calamities',
+      description:
+          'Insurance coverage for crop damage due to natural calamities',
       eligibility: 'All farmers including sharecroppers',
       benefits: 'Up to 90% insurance coverage',
       color: const Color(0xFFF57C00),
       icon: Icons.shield_rounded,
+      url: 'https://pmfby.gov.in/'
     ),
     Scheme(
       name: 'Soil Health Card Scheme',
-      description: 'Provides soil health cards to farmers for optimal fertilizer use',
+      description:
+          'Provides soil health cards to farmers for optimal fertilizer use',
       eligibility: 'All farmers across India',
       benefits: 'Free soil testing and recommendations',
       color: const Color(0xFF9C27B0),
       icon: Icons.science_rounded,
+      url: 'https://soilhealth.dac.gov.in/home'
     ),
     Scheme(
       name: 'National Agriculture Market (e-NAM)',
@@ -74,25 +83,21 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
       benefits: 'Better price discovery and transparency',
       color: const Color(0xFF00BCD4),
       icon: Icons.store_rounded,
+      url: 'https://nhb.gov.in/'
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         title: Text(l10n.governmentSchemes),
         backgroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
+        actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
       ),
       body: Column(
         children: [
@@ -138,10 +143,7 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
                       SizedBox(height: 4),
                       Text(
                         'Explore schemes & subsidies',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white70,
-                        ),
+                        style: TextStyle(fontSize: 13, color: Colors.white70),
                       ),
                     ],
                   ),
@@ -160,7 +162,7 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
               itemBuilder: (context, index) {
                 final category = categories[index];
                 final isSelected = selectedCategory == index;
-                
+
                 return GestureDetector(
                   onTap: () => setState(() => selectedCategory = index),
                   child: Container(
@@ -237,11 +239,7 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
                     color: scheme.color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    scheme.icon,
-                    color: scheme.color,
-                    size: 28,
-                  ),
+                  child: Icon(scheme.icon, color: scheme.color, size: 28),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -259,10 +257,7 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
                       const SizedBox(height: 4),
                       Text(
                         scheme.description,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -282,9 +277,17 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildInfoRow(Icons.people_rounded, 'Eligibility', scheme.eligibility),
+                _buildInfoRow(
+                  Icons.people_rounded,
+                  'Eligibility',
+                  scheme.eligibility,
+                ),
                 const SizedBox(height: 8),
-                _buildInfoRow(Icons.verified_rounded, 'Benefits', scheme.benefits),
+                _buildInfoRow(
+                  Icons.verified_rounded,
+                  'Benefits',
+                  scheme.benefits,
+                ),
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
@@ -336,10 +339,7 @@ class _GovernmentSchemesScreenState extends State<GovernmentSchemesScreen> {
                 ),
                 TextSpan(
                   text: value,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                 ),
               ],
             ),
@@ -493,6 +493,7 @@ class Scheme {
   final String benefits;
   final Color color;
   final IconData icon;
+  final String url;
 
   Scheme({
     required this.name,
@@ -501,5 +502,6 @@ class Scheme {
     required this.benefits,
     required this.color,
     required this.icon,
+    required this.url,
   });
 }

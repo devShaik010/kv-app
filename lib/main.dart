@@ -179,9 +179,9 @@ class _MyAppState extends State<MyApp> {
         AppLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('hi'), // Hindi
-        Locale('te'), // Telugu
+        Locale('en'), 
+        Locale('hi'), 
+        Locale('te'), 
       ],
       home: _isSetupComplete ? const App() : const IntroScreen(),
       // home: const IntroScreen(),
