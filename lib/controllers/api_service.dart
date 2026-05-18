@@ -8,7 +8,8 @@ class ApiService {
   // Option 2 - Physical Device (Ethernet): 'http://172.16.221.60:8000/kv'
   // Option 3 - Physical Device (Hotspot): 'http://192.168.137.1:8000/kv'
   // Option 4 - WSL Backend: Check WSL IP with 'wsl hostname -I'
-  static const String baseUrl = 'http://192.168.137.58:8000/kv'; // Default for Android emulator
+  // Localhost (use when running backend on same machine): 'http://127.0.0.1:8000/kv'
+  static const String baseUrl = 'http://127.0.0.1:8000/kv';
 
   // Timeout duration
   static const Duration timeoutDuration = Duration(seconds: 30);
